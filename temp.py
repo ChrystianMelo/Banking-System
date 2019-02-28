@@ -1,6 +1,6 @@
 #                                                                  Bank System
 #                                                         ~Developed by Chrystian Melo ~
-
+import os
 #Classes
 class User(): 
     def __init__(self,name,value,cpf):
@@ -11,7 +11,7 @@ class Account():
     def __init__(self, user):
         self.user = user#primary user
 
-#some functions that will e useable during the code
+#Some functions that will e useable during the code
 def searchCPF(acc, cpf):
     i = 0
     while i < len(acc):
@@ -28,10 +28,31 @@ def mainMenu():
     except ValueError:
         print("⚠️Oops!⚠️\n That's not a valid number. Try again!")
         return 0
-
-answ = mainMenu()
-
-accounts = []#This vector will contain all of the BMC bank's accounts
+def addFile(accounts):
+    i = 0
+    file = open("data.txt", "w")
+    while i < len(accounts):
+        file.write(accounts[i].user.name+"\n")
+        file.write(str(accounts[i].user.value)+"\n")
+        file.write(str(accounts[i].user.cpf)+"\n")
+        i+=1
+    file.close()
+def loadFile():
+    acc = []
+    i = 1
+    file = open("data.txt", "r")
+    st = file.readlines()
+    while i < len(st):
+        a = Account(User(st[i-1], st[i], st[i+1]))
+        acc = acc + [a]
+        st = file.readline()
+        i+=3 
+    file.close()
+    os.remove("data.txt") 
+    return acc
+    
+accounts = loadFile()#This vector will contain all of the BMC bank's accounts
+answ = mainMenu()#openning the menu
 while answ != 7: 
     #OPTION 1: allocing/reallocing the quantity of accounts
     if answ == 1:
@@ -51,4 +72,4 @@ while answ != 7:
         else:
             print("⚠️There is no users in this bank yet!⚠️\n")
     answ = mainMenu()
-        
+addFile(accounts)
