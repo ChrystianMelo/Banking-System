@@ -2,6 +2,7 @@
 #                                                         ~Developed by Chrystian Melo ~
 import os
 import os.path
+import matplotlib.pyplot  as plt
 
 #Global Variables
 qttparameters = 3#quantity of parameters needed to User()
@@ -56,13 +57,29 @@ def loadFile():
         file.close()
         os.remove("data.txt")
     return acc
+def sort(alist):
+    for fillslot in range(len(alist)-1,0,-1):
+       positionOfMax=0
+       for location in range(1,fillslot+1):
+           if int(alist[location])>int(alist[positionOfMax]):
+               positionOfMax = location
+
+       temp = int(alist[fillslot])
+       alist[fillslot] = alist[positionOfMax]
+       alist[positionOfMax] = temp
+def graphPloter(x,y):
+    plt.plot(x,y)#x, y
+    plt.title('UserxValue')
+    plt.xlabel('Id_Users')#X
+    plt.ylabel('ValueR$')#Y
+    plt.show()#Show
 
 accounts = loadFile()#This vector will contain all of the BMC bank's accounts
 answ = mainMenu()#openning the menu
 while answ != 7:
     #OPTION 1: allocing/reallocing the quantity of accounts
     if answ == 1:
-        a=Account(User(str(raw_input("Name..:")), int(raw_input("Value..:")), int(raw_input("CPF..::"))))
+        a=Account(User(str(input("Name..:")), int(input("Value..:")), int(input("CPF..::"))))
         accounts = accounts + [a]#allocing the new account in the array of all accounts
     #OPTION 2:
     if answ == 2:
@@ -79,4 +96,14 @@ while answ != 7:
         else:
             print("There is no users in this bank yet!\n")
     answ = mainMenu()
+valuesRS = ['0']#vector of values in the bank
+valuesCPF = ['0'] #quantitiy of values
+i=0
+#Get all the valors in the bank and put in the vector
+while i < len(accounts):
+    valuesRS += str(accounts[i].user.value)#valuesR$
+    valuesCPF += str(accounts[i].user.cpf)#idCPF
+    i+=1
+sort(valuesCPF)
+graphPloter(valuesCPF,valuesRS)
 addFile(accounts)
