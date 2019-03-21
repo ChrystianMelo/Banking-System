@@ -160,7 +160,7 @@ def graphPloter(x,y):
     plt.ylabel('ValueR$')#Y
     plt.show()#Show
 
-#main
+#main funciotn
 answ = 2 
 while answ == 2:
     login(loadAccounts()) #menu
