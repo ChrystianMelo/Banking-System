@@ -1,6 +1,6 @@
 # BMC
 BancoMeloChrystian
-Using my knownledge in python to develop a bank system.
--> The data base is using txt files.
--> I will add a graph to know how are going the movimentation in the Bank Melo Chrystian 
+This project had been made to improve my knownledge in python.
+-> The database was made with '.txt' files.
+-> Adding a graph to watch the movimentation in the BMC's account 
 -> The graph logic is based on the creation of a personal perspective of your account.
