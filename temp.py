@@ -26,7 +26,7 @@ class User(object):
                 if i % 2 == 0:#0,2,4...(just the value alteration)
                     actual = actual + int(linhas[i])
             return actual
-        return 1#ERROR No cash
+        return bool('false')#ERROR No cash
     def plotGraph(self):
         lines = open(self.file).readlines()
         x = [0]
@@ -100,21 +100,20 @@ def login(data):#this function will foward the logic to option()
             else:
                 print("Wrong Password")
         if verify == "no":#Normal Client
-            search = searchCPF(data, int(cpf))
-            if search != 0: #There is a user
-                search -= 1#Undoing what i did to confirm in SearchCPF funcion
+            found = searchCPF(data, int(cpf))
+            if type(found) is int: # There is a user
                 passwd = str(getpass.getpass("Password.:"))
-                if data[search].user.paswd.strip('\n') == passwd:#passw digited is equal to passwd of user x
-                    print("\n\t\tWelcome ", data[search].user.name.strip(),"!!")
+                if data[int(found)].user.paswd.strip('\n') == passwd:#passw digited is equal to passwd of user x
+                    print("\n\t\tWelcome ", data[int(found)].user.name.strip(),"!!")
                     try :
                         answ = int(input("Options:\n 1) Consult my bank account\n 2) Delete my account\n 3) Add Money\n 4) Remove Money\n.:"))
                     except ValueError:
                         print("Oops! That's not a valid option. Try again")
-                    options(answ, data, search)
+                    options(answ, data, int(found))
                 else:
                     print("Wrong Password!!")
                     addFile(data)
-                    return 1#Killing the process
+                    return bool('false')#Killing the process
             else:#There is no user with this cpf
                 print("No user!")
                 options(0, data, 0)#adding a new user
@@ -137,11 +136,10 @@ def options(op, accounts, ident):#ident will be used in a specific case
             print("\nMr(s) ", accounts[ident].user.name, "\nYou have not added cash in this account!")
     if op == 2:
         cpf = int(input("What's the 'CPF' of the user that you want to consult?\n..:"))#variable to search
-        ok = searchCPF(accounts, cpf)
-        if ok !=  0:
-            ok = ok - 1#Undoing what I did in searchCPF to not return 0(line 19)
-            os.remove(str(accounts[ok].user.cpf)+".txt")
-            accounts.remove(accounts[ok])
+        verify = searchCPF(accounts, cpf)
+        if verify != bool('false'):#The cpf user exists
+            os.remove(str(accounts[int(verify)].user.cpf)+".txt")
+            accounts.remove(accounts[int(verify)])
             print("Account deleted")
         else:
             print("There is no user with this 'CPF'!\n")
@@ -157,12 +155,10 @@ def options(op, accounts, ident):#ident will be used in a specific case
     addFile(accounts)#saving data
 #Useful Functions
 def searchCPF(acc, cpf):
-    i = 0
-    while i < len(acc):
+    for i in range (0, len(acc)):
         if int(acc[i].user.cpf) == cpf:
-            return i+1#Only return 0 when happens some error..OBS:When I receive this return I will undo this operation
-        i+=1
-    return 0#not found
+            return i
+    return bool('false')#not found
 def sort(alist):
      for position in range(len(alist)-1,0,-1):
        positionOfMax=0
