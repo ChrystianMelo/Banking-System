@@ -4,8 +4,8 @@ import os
 import os.path
 import matplotlib.pyplot  as plt
 import getpass
-from datetime import date
-#import time
+from datetime import date#month/year
+#import time#min/sec
 
 #Global Variables
 qttparameters = 3#quantity of parameters needed to User()
